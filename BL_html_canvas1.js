@@ -31624,20 +31624,29 @@ if (reversed == null) { reversed = false; }
 		
 			this.isZoomPanInit = true;
 		}
-		// Đảm bảo logic tay dầu chỉ khởi tạo một lần duy nhất
+		// =====================================================================
+		// HỆ THỐNG ĐIỀU KHIỂN TAY DẦU - ĐỘNG CƠ TRÁI & PHẢI (TOUCH-READY)
+		// =====================================================================
 		if (!this.isTayDauLogicInit) {
 		    this.isTayDauLogicInit = true;
 		    var _this = this;
 		
+		    // Biến cờ hiệu quản lý luồng sự kiện
 		    _this.tayDauTrai_DangChay = false;
 		    _this.tayDauPhai_DangChay = false;
 		
-		    // Xuất hàm ra ngoài để Master Script gọi được khi RPM > 61.5
+		    // BƯỚC 0: TỰ ĐỘNG BẬT CẢM ỨNG (Nếu chưa bật)
+		    if (_this.stage && createjs.Touch.isSupported()) {
+		        createjs.Touch.enable(_this.stage, false, false);
+		        _this.stage.preventSelection = true;
+		    }
+		
+		    // Xuất hàm ra global để Master Script (Kịch bản Khởi động) gọi được
 		    exportRoot.xyLyTayDau_Trai = xyLyTayDau_Trai;
 		    exportRoot.xyLyTayDau_Phai = xyLyTayDau_Phai;
 		
 		    // =====================================================================
-		    // 1. RADAR DEEP-SCAN (ĐÃ SỬA LỖI BẮT NHẦM CHỐNG ĐÈ SỐ)
+		    // 1. RADAR DEEP-SCAN (QUÉT SÂU DOM & CHỐNG BẮT NHẦM INSTANCE)
 		    // =====================================================================
 		    function timDoiTuong(mcCha, duongDan) {
 		        var doiTuong = mcCha;
@@ -31645,18 +31654,18 @@ if (reversed == null) { reversed = false; }
 		            if (!doiTuong) return null;
 		            var tenNut = duongDan[i];
 		            
-		            // Ưu tiên 1: Tên gốc chuẩn xác (luôn lấy trước)
+		            // Ưu tiên 1: Tên gốc chuẩn xác
 		            if (doiTuong[tenNut] && doiTuong[tenNut].parent) {
 		                doiTuong = doiTuong[tenNut];
 		                continue;
 		            }
 		            
-		            // Ưu tiên 2: Tìm kiếm bản sao do HTML5 tự đổi tên
+		            // Ưu tiên 2: Tìm kiếm bản sao do HTML5 tự đổi tên (thêm _0, _1, _2...)
 		            var found = null;
 		            for (var j = 0; j < 5; j++) {
 		                var tryName = tenNut + "_" + j;
 		                
-		                // [QUAN TRỌNG NHẤT]: Cấm tuyệt đối tên gốc bắt nhầm sang đuôi 2, 3 của đồng chí
+		                // BỘ LỌC CHỐNG NHIỄU (Bảo vệ các đồng hồ số 2, số 3)
 		                if (tenNut === "vongQuay_txt" && tryName === "vongQuay_txt_2") continue;
 		                if (tenNut === "nhietDo_txt" && tryName === "nhietDo_txt_2") continue;
 		                if (tenNut === "kimCaoAp" && (tryName === "kimCaoAp2" || tryName === "kimCaoAp3")) continue;
@@ -31673,6 +31682,7 @@ if (reversed == null) { reversed = false; }
 		        return doiTuong;
 		    }
 		
+		    // Các hàm Helper thao tác nhanh
 		    function setVis(mcCha, duongDan, isVis) {
 		        var obj = timDoiTuong(mcCha, duongDan);
 		        if (obj) obj.visible = isVis;
@@ -31694,7 +31704,7 @@ if (reversed == null) { reversed = false; }
 		    // 2. HÀM KHỞI TẠO TAY DẦU CƠ BẢN (TRẠNG THÁI TĨNH & KÉO THẢ)
 		    // =====================================================================
 		    function xyLyTayDau_0() {
-		        var maxH = -800; 
+		        var maxH = -150; // Dự phòng nếu không lấy được chiều cao thang đo
 		        if (_this.rud_LeftRight && _this.rud_LeftRight.thangdo) {
 		            var bnd = _this.rud_LeftRight.thangdo.nominalBounds || _this.rud_LeftRight.thangdo.getBounds();
 		            if (bnd && !isNaN(bnd.height)) {
@@ -31703,8 +31713,7 @@ if (reversed == null) { reversed = false; }
 		            }
 		        }
 		
-		        // --- ĐÃ FIX: CHỈ KÉO TRỤC Y, KHÔNG ĐỤNG TRỤC X ĐỂ TRÁNH MẤT HÌNH ---
-		        // --- CHỐNG TRƯỢT X & ÉP TỌA ĐỘ CHUẨN THEO LOGIC AS3 RECTANGLE ---
+		        // HÀM GẮN SỰ KIỆN KÉO THẢ TƯƠNG THÍCH ĐA NỀN TẢNG
 		        function setupDraggable(targetMC, isLeftLever) {
 		            if (!targetMC) return;
 		            targetMC.cursor = "pointer";
@@ -31717,8 +31726,7 @@ if (reversed == null) { reversed = false; }
 		                var pt = this.parent.globalToLocal(evt.stageX, evt.stageY);
 		                this.offsetY = !isNaN(pt.y) ? (this.y - pt.y) : 0;
 		                
-		                // [ĐIỂM MẤU CHỐT]: Phục dựng hoàn hảo logic AS3 gốc
-		                // Tay Trái luôn ép tuyệt đối về x = 0. Tay Phải neo tại vị trí hiện hành.
+		                // Lấy mốc tọa độ X ban đầu để khóa chặt (Chống vuốt lệch)
 		                this.lockX = isLeftLever ? 0 : this.x; 
 		            });
 		            
@@ -31728,10 +31736,12 @@ if (reversed == null) { reversed = false; }
 		                if (isNaN(pt.y)) return; 
 		                
 		                var newY = pt.y + this.offsetY;
+		                
+		                // Ép giới hạn Hành trình tay dầu
 		                if (newY > 0) newY = 0;
 		                if (newY < maxH) newY = maxH;
 		                
-		                // Khóa chặt cả X và Y không cho trượt ra ngoài
+		                // Khóa X, chỉ cho trượt Y
 		                if (this.y !== newY || this.x !== this.lockX) {
 		                    this.x = this.lockX; 
 		                    this.y = newY;
@@ -31739,10 +31749,10 @@ if (reversed == null) { reversed = false; }
 		            });
 		        }
 		
-		        // Gọi hàm và phân biệt rõ Trái (true) - Phải (false)
 		        setupDraggable(_this.rud_LeftRight.rud_left, true);
 		        setupDraggable(_this.rud_LeftRight.rud_right, false);
 		
+		        // Vòng lặp cập nhật thông số màn hình khi máy chưa nổ
 		        createjs.Ticker.addEventListener("tick", loopTayDauTinh);
 		
 		        function loopTayDauTinh(e) {
@@ -31753,11 +31763,13 @@ if (reversed == null) { reversed = false; }
 		            if (_this.stop_Trai && _this.stop_Trai.currentFrame === 0) _this.tayDauTrai_DangChay = false;
 		            if (_this.stop_Phai && _this.stop_Phai.currentFrame === 0) _this.tayDauPhai_DangChay = false;
 		
+		            // Đèn báo
 		            capNhatLed(_this, ["stop_Trai"], valTrai > 5.5 ? 2 : 1);
 		            capNhatLed(_this, ["mG_Trai"], (valTrai > 5.5 && valTrai < 6.5) ? 2 : 1);
 		            capNhatLed(_this, ["stop_Phai"], valPhai > 5.5 ? 2 : 1);
 		            capNhatLed(_this, ["mG_Phai"], (valPhai > 5.5 && valPhai < 6.5) ? 2 : 1);
 		
+		            // Màn hình
 		            var screens = [_this.manHinhChinh.manHinhTrai, _this.manHinhChinh.manHinhGiua, _this.manHinhChinh.manHinhPhai];
 		            screens.forEach(function(mc) {
 		                if (mc) {
@@ -31768,14 +31780,16 @@ if (reversed == null) { reversed = false; }
 		        }
 		
 		        function updateSingleScreenLogic(mc, side, val) {
-		            var frame = mc.currentFrame;
+		            var frame = mc.currentFrame; // 0-based JS (1 là frame 2 AS3, 3 là frame 4 AS3)
 		            var suffix = (side == "left") ? "_lev" : "_prav";
 		            var gaugeName = (side == "left") ? "dongHoVongQuayTrai" : "dongHoVongQuayPhai";
 		
-		            if (frame == 1) { 
+		            if (frame === 1) { 
+		                // Cập nhật text led α_rud
 		                var alphaTxt = (val < 5.5) ? "12" : ((val < 6.5) ? "17.7" : (12 + val).toFixed(1));
 		                capNhatChu(mc, ["alpha_rud" + suffix], alphaTxt);
 		
+		                // Cập nhật text led DvMax
 		                var divisor = 66.67;
 		                if (val > 21 && val < 41) divisor = 57;
 		                if (val >= 41) divisor = 53;
@@ -31790,9 +31804,9 @@ if (reversed == null) { reversed = false; }
 		                capNhatChu(mc, ["dvMax" + suffix], dvVal);
 		            }
 		
-		            if (frame == 1) { 
+		            if (frame === 1) { 
 		                setGaugeVisibility(mc, gaugeName, true); 
-		            } else if (frame == 3) {
+		            } else if (frame === 3) {
 		                setVis(mc, [gaugeName, "kimCaoAp3"], true);
 		                setVis(mc, [gaugeName, "kimThapAp3"], true);
 		                setVis(mc, [gaugeName, "kimCaoAp2"], false);
@@ -31820,6 +31834,7 @@ if (reversed == null) { reversed = false; }
 		        }
 		    }
 		
+		    // Kích hoạt trạng thái ban đầu
 		    xyLyTayDau_0();
 		
 		    // =====================================================================
@@ -31834,6 +31849,8 @@ if (reversed == null) { reversed = false; }
 		        var SPEED_SMOOTHING = 0.02;
 		
 		        function onEnterFrameHandler(evt) {
+		            if (!_this.tayDauTrai_DangChay) return; // Bảo vệ vòng lặp
+		
 		            var rawLeverVal = -_this.rud_LeftRight.rud_left.y * 0.53 / 9;
 		            var alpha_rud = 12 + rawLeverVal;
 		            var engineTarget = rawLeverVal; 
@@ -31852,6 +31869,7 @@ if (reversed == null) { reversed = false; }
 		        }
 		
 		        function updateSound() {
+		            if (!myChannel) return;
 		            var vol = Math.abs(_this.rud_LeftRight.rud_left.y / 14);
 		            myChannel.volume = (rud_heighY > 6.5) ? vol : 0;
 		        }
@@ -31863,12 +31881,12 @@ if (reversed == null) { reversed = false; }
 		            if (val > 7 && val < 21) updateGaugesDisplay(mc, gName, val, 5.3, 66, 6.1, 20);
 		            else if (val >= 21 && val < 41) updateGaugesDisplay(mc, gName, val, 1.6, 144, 3.9, 69);
 		            else if (val >= 41) {
-		                if (frame == 1 || frame == 3) {
+		                if (frame === 1 || frame === 3) {
 		                    capNhatKim(mc, [gName, "kimThapAp2"], (val * 2.2) + 142);
 		                    capNhatKim(mc, [gName, "dongHoNhietDo", "kimNhietDo2"], (val * 1.8) - 15);
 		                    capNhatChu(mc, [gName, "vongQuay_txt_2"], (((val * 1.31) + 236) / 3).toFixed(1));
 		                    capNhatKim(mc, [gName, "kimCaoAp2"], (val * 1.31) + 155);
-		                    if (frame == 3) capNhatChu(mc, ["nhietDo_Trai_txt_2"], (((val * 1.8) + 120) / 0.3).toFixed(0));
+		                    if (frame === 3) capNhatChu(mc, ["nhietDo_Trai_txt_2"], (((val * 1.8) + 120) / 0.3).toFixed(0));
 		                }
 		            }
 		
@@ -31878,54 +31896,49 @@ if (reversed == null) { reversed = false; }
 		
 		        function updateGaugesDisplay(mc, gName, val, mul1, off1, mul2, off2) {
 		            var frame = mc.currentFrame;
-		            if (frame == 1 || frame == 3) {
+		            if (frame === 1 || frame === 3) {
 		                capNhatKim(mc, [gName, "kimCaoAp2"], (val * mul1) + off1);
-		                var numVal = ((val * mul1) + (frame == 1 && val >= 21 ? 228 : 147)) / 3;
+		                var numVal = ((val * mul1) + (frame === 1 && val >= 21 ? 228 : 147)) / 3;
 		                if (val >= 21) numVal = ((val * 1.6) + 228) / 3;
 		                capNhatChu(mc, [gName, "vongQuay_txt_2"], numVal.toFixed(1));
 		                
 		                capNhatKim(mc, [gName, "kimThapAp2"], (val * mul2) + off2);
 		                
-		                if (frame == 1) capNhatKim(mc, [gName, "dongHoNhietDo", "kimNhietDo2"], (val * 1.8) - 15);
-		                else if (frame == 3) capNhatChu(mc, ["nhietDo_Trai_txt_2"], (((val * 1.8) + 120) / 0.3).toFixed(0));
+		                if (frame === 1) capNhatKim(mc, [gName, "dongHoNhietDo", "kimNhietDo2"], (val * 1.8) - 15);
+		                else if (frame === 3) capNhatChu(mc, ["nhietDo_Trai_txt_2"], (((val * 1.8) + 120) / 0.3).toFixed(0));
 		            }
 		        }
 		
 		        function handleVisibility(mc, frame, val) {
 		            var isDynamic = (val > 6.5); 
 		            
-		            function toggleVis(duongDan, isVis) {
-		                var obj = timDoiTuong(mc, duongDan);
-		                if (obj) obj.visible = isVis;
-		            }
+		            if (frame === 1) { 
+		                setVis(mc, ["dongHoVongQuayTrai", "kimCaoAp"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "vongQuay_txt"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "kimThapAp"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "dongHoNhietDo", "kimNhietDo"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "dongHoNhietDo", "nhietDo_txt"], !isDynamic);
 		
-		            if (frame == 1) { 
-		                toggleVis(["dongHoVongQuayTrai", "kimCaoAp"], !isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "vongQuay_txt"], !isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "kimThapAp"], !isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "dongHoNhietDo", "kimNhietDo"], !isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "dongHoNhietDo", "nhietDo_txt"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "kimCaoAp2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "vongQuay_txt_2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "kimThapAp2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "dongHoNhietDo", "kimNhietDo2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "dongHoNhietDo", "nhietDo_txt_2"], isDynamic);
+		            } else if (frame === 3) { 
+		                setVis(mc, ["dongHoVongQuayTrai", "kimCaoAp3"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "kimThapAp3"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "vongQuay_txt"], !isDynamic);
+		                setVis(mc, ["nhietDo_Trai_txt"], !isDynamic);
 		
-		                toggleVis(["dongHoVongQuayTrai", "kimCaoAp2"], isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "vongQuay_txt_2"], isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "kimThapAp2"], isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "dongHoNhietDo", "kimNhietDo2"], isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "dongHoNhietDo", "nhietDo_txt_2"], isDynamic);
-		            } else if (frame == 3) { 
-		                toggleVis(["dongHoVongQuayTrai", "kimCaoAp3"], !isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "kimThapAp3"], !isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "vongQuay_txt"], !isDynamic);
-		                toggleVis(["nhietDo_Trai_txt"], !isDynamic);
-		
-		                toggleVis(["dongHoVongQuayTrai", "kimCaoAp2"], isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "kimThapAp2"], isDynamic);
-		                toggleVis(["dongHoVongQuayTrai", "vongQuay_txt_2"], isDynamic);
-		                toggleVis(["nhietDo_Trai_txt_2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "kimCaoAp2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "kimThapAp2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayTrai", "vongQuay_txt_2"], isDynamic);
+		                setVis(mc, ["nhietDo_Trai_txt_2"], isDynamic);
 		            }
 		        }
 		
 		        function updateTextInfo(mc, frame, val, rawLeverVal) {
-		            if (frame != 1) return; 
+		            if (frame !== 1) return; 
 		            var alphaTxt = (rawLeverVal < 5.5) ? "12" : ((rawLeverVal < 6.5) ? "17.7" : (12 + rawLeverVal).toFixed(1));
 		            capNhatChu(mc, ["alpha_rud_lev"], alphaTxt);
 		            
@@ -31955,6 +31968,8 @@ if (reversed == null) { reversed = false; }
 		        var SPEED_SMOOTHING = 0.02;
 		
 		        function onEnterFrameHandler(evt) {
+		            if (!_this.tayDauPhai_DangChay) return;
+		
 		            var rawY = _this.rud_LeftRight.rud_right.y;
 		            var rawLeverVal = -rawY * 0.53 / 9;
 		            var alpha_rud = 12 + rawLeverVal;
@@ -31974,6 +31989,7 @@ if (reversed == null) { reversed = false; }
 		        }
 		
 		        function updateSound(rawY) {
+		            if (!myChannel) return;
 		            var vol = Math.abs(rawY / 14);
 		            myChannel.volume = (rud_heighY_Phai > 6.5) ? vol : 0;
 		        }
@@ -31989,12 +32005,12 @@ if (reversed == null) { reversed = false; }
 		                if (val < 21) updateGaugesDisplay(mc, gName, val, 5.3, 66, 6.1, 20);
 		                else if (val < 41) updateGaugesDisplay(mc, gName, val, 1.6, 144, 3.9, 69);
 		                else {
-		                    if (frame == 1 || frame == 3) {
+		                    if (frame === 1 || frame === 3) {
 		                        capNhatKim(mc, [gName, "kimCaoAp2"], (val * 1.31) + 155);
 		                        capNhatKim(mc, [gName, "dongHoNhietDo", "kimNhietDo2"], (val * 1.8) - 15);
 		                        capNhatChu(mc, [gName, "vongQuay_txt_2"], (((val * 1.31) + 236) / 3).toFixed(1));
 		                        capNhatKim(mc, [gName, "kimThapAp2"], (val * 2.2) + 142);
-		                        if (frame == 3) capNhatChu(mc, ["nhietDo_Phai_txt_2"], (((val * 1.8) + 120) / 0.3).toFixed(0));
+		                        if (frame === 3) capNhatChu(mc, ["nhietDo_Phai_txt_2"], (((val * 1.8) + 120) / 0.3).toFixed(0));
 		                    }
 		                }
 		            }
@@ -32004,7 +32020,7 @@ if (reversed == null) { reversed = false; }
 		
 		        function updateGaugesDisplay(mc, gName, val, mul1, off1, mul2, off2) {
 		            var frame = mc.currentFrame;
-		            if (frame == 1 || frame == 3) { 
+		            if (frame === 1 || frame === 3) { 
 		                capNhatKim(mc, [gName, "kimCaoAp2"], (val * mul1) + off1);
 		                var numVal = ((val * mul1) + 147) / 3;
 		                if (val >= 21) numVal = ((val * 1.6) + 228) / 3;
@@ -32012,47 +32028,42 @@ if (reversed == null) { reversed = false; }
 		
 		                capNhatKim(mc, [gName, "kimThapAp2"], (val * mul2) + off2);
 		                
-		                if (frame == 1) capNhatKim(mc, [gName, "dongHoNhietDo", "kimNhietDo2"], (val * 1.8) - 15);
-		                else if (frame == 3) capNhatChu(mc, ["nhietDo_Phai_txt_2"], (((val * 1.8) + 120) / 0.3).toFixed(0));
+		                if (frame === 1) capNhatKim(mc, [gName, "dongHoNhietDo", "kimNhietDo2"], (val * 1.8) - 15);
+		                else if (frame === 3) capNhatChu(mc, ["nhietDo_Phai_txt_2"], (((val * 1.8) + 120) / 0.3).toFixed(0));
 		            }
 		        }
 		
 		        function handleVisibility(mc, frame, val) {
 		            var isDynamic = (val > 6.5);
 		            
-		            function toggleVis(duongDan, isVis) {
-		                var obj = timDoiTuong(mc, duongDan);
-		                if (obj) obj.visible = isVis;
-		            }
+		            if (frame === 1) { 
+		                setVis(mc, ["dongHoVongQuayPhai", "kimCaoAp"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "vongQuay_txt"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "kimThapAp"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "dongHoNhietDo", "kimNhietDo"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "dongHoNhietDo", "nhietDo_txt"], !isDynamic);
 		
-		            if (frame == 1) { 
-		                toggleVis(["dongHoVongQuayPhai", "kimCaoAp"], !isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "vongQuay_txt"], !isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "kimThapAp"], !isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "dongHoNhietDo", "kimNhietDo"], !isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "dongHoNhietDo", "nhietDo_txt"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "kimCaoAp2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "vongQuay_txt_2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "kimThapAp2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "dongHoNhietDo", "kimNhietDo2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "dongHoNhietDo", "nhietDo_txt_2"], isDynamic);
+		            } else if (frame === 3) { 
+		                setVis(mc, ["dongHoVongQuayPhai", "kimCaoAp3"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "kimThapAp3"], !isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "vongQuay_txt"], !isDynamic);
+		                setVis(mc, ["nhietDo_Phai_txt"], !isDynamic);
 		
-		                toggleVis(["dongHoVongQuayPhai", "kimCaoAp2"], isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "vongQuay_txt_2"], isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "kimThapAp2"], isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "dongHoNhietDo", "kimNhietDo2"], isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "dongHoNhietDo", "nhietDo_txt_2"], isDynamic);
-		            } else if (frame == 3) { 
-		                toggleVis(["dongHoVongQuayPhai", "kimCaoAp3"], !isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "kimThapAp3"], !isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "vongQuay_txt"], !isDynamic);
-		                toggleVis(["nhietDo_Phai_txt"], !isDynamic);
-		
-		                toggleVis(["dongHoVongQuayPhai", "kimCaoAp2"], isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "kimThapAp2"], isDynamic);
-		                toggleVis(["dongHoVongQuayPhai", "vongQuay_txt_2"], isDynamic);
-		                toggleVis(["nhietDo_Phai_txt_2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "kimCaoAp2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "kimThapAp2"], isDynamic);
+		                setVis(mc, ["dongHoVongQuayPhai", "vongQuay_txt_2"], isDynamic);
+		                setVis(mc, ["nhietDo_Phai_txt_2"], isDynamic);
 		            }
 		        }
 		
 		        function updateTextInfo(mc, frame, val, rawLeverVal) {
 		            if (rawLeverVal === undefined) rawLeverVal = 0;
-		            if (frame != 1) return; 
+		            if (frame !== 1) return; 
 		            var alphaTxt = (rawLeverVal < 5.5) ? "12" : ((rawLeverVal < 6.5) ? "17.7" : (12 + rawLeverVal).toFixed(1));
 		            capNhatChu(mc, ["alpha_rud_prav"], alphaTxt);
 		
@@ -35844,23 +35855,23 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/Bitmap11a.jpg?1779530742814", id:"Bitmap11a"},
-		{src:"images/BL_html_canvas1_atlas_1.png?1779530741970", id:"BL_html_canvas1_atlas_1"},
-		{src:"images/BL_html_canvas1_atlas_2.png?1779530741970", id:"BL_html_canvas1_atlas_2"},
-		{src:"images/BL_html_canvas1_atlas_3.png?1779530741971", id:"BL_html_canvas1_atlas_3"},
-		{src:"images/BL_html_canvas1_atlas_4.png?1779530741971", id:"BL_html_canvas1_atlas_4"},
-		{src:"images/BL_html_canvas1_atlas_5.png?1779530741972", id:"BL_html_canvas1_atlas_5"},
-		{src:"images/BL_html_canvas1_atlas_6.png?1779530741972", id:"BL_html_canvas1_atlas_6"},
-		{src:"images/BL_html_canvas1_atlas_7.png?1779530741973", id:"BL_html_canvas1_atlas_7"},
-		{src:"images/BL_html_canvas1_atlas_8.png?1779530741978", id:"BL_html_canvas1_atlas_8"},
-		{src:"images/BL_html_canvas1_atlas_9.png?1779530741992", id:"BL_html_canvas1_atlas_9"},
-		{src:"sounds/Sound_CongTacClass.mp3?1779530742814", id:"Sound_CongTacClass"},
-		{src:"sounds/Sound_NoMayClass1.mp3?1779530742814", id:"Sound_NoMayClass1"},
-		{src:"sounds/sound_MoMay_KhoiDongXongClass.mp3?1779530742814", id:"sound_MoMay_KhoiDongXongClass"},
-		{src:"sounds/Sound_NoMayClass.mp3?1779530742814", id:"Sound_NoMayClass"},
-		{src:"https://code.jquery.com/jquery-3.4.1.min.js?1779530742814", id:"lib/jquery-3.4.1.min.js"},
-		{src:"components/sdk/anwidget.js?1779530742814", id:"sdk/anwidget.js"},
-		{src:"components/ui/src/textinput.js?1779530742814", id:"an.TextInput"}
+		{src:"images/Bitmap11a.jpg?1779531557142", id:"Bitmap11a"},
+		{src:"images/BL_html_canvas1_atlas_1.png?1779531556320", id:"BL_html_canvas1_atlas_1"},
+		{src:"images/BL_html_canvas1_atlas_2.png?1779531556320", id:"BL_html_canvas1_atlas_2"},
+		{src:"images/BL_html_canvas1_atlas_3.png?1779531556321", id:"BL_html_canvas1_atlas_3"},
+		{src:"images/BL_html_canvas1_atlas_4.png?1779531556321", id:"BL_html_canvas1_atlas_4"},
+		{src:"images/BL_html_canvas1_atlas_5.png?1779531556322", id:"BL_html_canvas1_atlas_5"},
+		{src:"images/BL_html_canvas1_atlas_6.png?1779531556323", id:"BL_html_canvas1_atlas_6"},
+		{src:"images/BL_html_canvas1_atlas_7.png?1779531556324", id:"BL_html_canvas1_atlas_7"},
+		{src:"images/BL_html_canvas1_atlas_8.png?1779531556332", id:"BL_html_canvas1_atlas_8"},
+		{src:"images/BL_html_canvas1_atlas_9.png?1779531556347", id:"BL_html_canvas1_atlas_9"},
+		{src:"sounds/Sound_CongTacClass.mp3?1779531557142", id:"Sound_CongTacClass"},
+		{src:"sounds/Sound_NoMayClass1.mp3?1779531557142", id:"Sound_NoMayClass1"},
+		{src:"sounds/sound_MoMay_KhoiDongXongClass.mp3?1779531557142", id:"sound_MoMay_KhoiDongXongClass"},
+		{src:"sounds/Sound_NoMayClass.mp3?1779531557142", id:"Sound_NoMayClass"},
+		{src:"https://code.jquery.com/jquery-3.4.1.min.js?1779531557142", id:"lib/jquery-3.4.1.min.js"},
+		{src:"components/sdk/anwidget.js?1779531557142", id:"sdk/anwidget.js"},
+		{src:"components/ui/src/textinput.js?1779531557142", id:"an.TextInput"}
 	],
 	preloads: []
 };
