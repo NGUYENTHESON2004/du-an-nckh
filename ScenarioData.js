@@ -1,48 +1,125 @@
-var ScenarioData = {
+window.ScenarioData = {
 	rawData: "",
 	rawErrors: "",
 	lessonNames: {
-    "KT_Nguon_MD": "Kiểm tra khả năng hoạt động của các hệ thống bằng nguồn điện mặt đất",
+    "KT_Nguon_MD": "MỞ MÁY NGOẠI TRƯỜNG",
     "KT_Nguon_AQ": "Kiểm tra khả năng hoạt động của các hệ thống bằng nguồn điện Ắc quy",
     "KT_Truoc_KD": "Kiểm tra khả năng hoạt động của các hệ thống trước khi khởi động",
     "KD_DC": "Khởi động động cơ"
 },
 
 	initData: function() {
-		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.akum_lev.1.1 | Tôi đã sửa | nan\n";
-		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.akum_prav.1.2 | Kiểm tra khả năng hoạt động của các hệ thống trên máy bay khi sử dụng nguồn điện sân bay: | Выполнить проверку работоспособности бортовых систем при питании от аэродромного источника энергии:\n";
-		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.generator_prav.1.4 | Bật công tắc АККУМ ЛЕВ (ẮC QUY TRÁI); | включить выключатель АККУМ ЛЕВ;\n";
-		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.generator_vcy.1.5 | Bật công tắc АККУМ ПРАВ (ẮC QUY PHẢI); | включить выключатель АККУМ ПРАВ;\n";
-		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.topl_nasos.1.6 | Kiểm tra hiển thị trên МФЦИ (Màn hình chỉ thị đa năng) của cả hai buồng lái | проконтролировать индикацию на МФЦИ обеих кабин мнемокадров:\n";
-		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.kislorod_oxy.1.7 | Trên màn hình bên trái hiển thị khung hình Kiểm tra trước khi bay ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ; | на левом ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.1.8 | Trên màn hình bên phải hiển thị khung hình КИСС ТИПОВОЙ; | на правом КИСС ТИПОВОЙ;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.1.9 | Trên màn hình ở giữa hiển thị khung hình КИСС СЭС; | на среднем КИСС СЭС;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.1.10 | Kiểm tra liên lạc vô tuyến qua thiết bị liên lạc nội bộ СПУ giữa các phi công ở buồng lái trước và buồng lái sau, với kỹ thuật trưởng máy bay và điều chỉnh âm lượng nếu cần thiết; | проверить радиосвязь по СПУ между летчиками в первой и второй кабинах, с техником самолета и при необходимости отрегулировать громкость;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.1.11 | Kiểm tra việc thiết lập kênh liên lạc vô tuyến với chỉ huy bay trên bảng điều khiển của СПУ; | проверить установку канала радиосвязи с руководителем полетов на объединенном пульте управления СПУ;\n";
-		this.rawData += "KT_Nguon_MD | btn_yes.1.1 | Thực hiện tuần tự các hướng dẫn hiển thị trong cửa sổ 5 của khung hình ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ: | выполнить последовательно инструкции, предъявляемые в окне 5 мнемокадра ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ:\n";
-		this.rawData += "KT_Nguon_MD | btn_next.2.1 | Chỉ dẫn 1: ЗАПРИ ФОНАРЬ (ĐÓNG NẮP BUỒNG LÁI) | 1. ЗАПРИ ФОНАРЬ\n";
-		this.rawData += "KT_Nguon_MD | btn_next.2.2 | - Ra lệnh cho kỹ thuật viên máy bay đóng nắp buồng lái. Sau khi đóng nắp buồng lái, hãy kiểm tra: | дать команду технику самолета на закрытие фонаря. После закрытия фонаря проконтролировать:\n";
-		this.rawData += "KT_Nguon_MD | btn_next.2.3 | - Tay nắm mở nắp buồng lái ОТКРЫТИЕ ФОНАРЯ được đặt ở vị trí đóng ФОНАРЬ ЗАКРЫТ và đã được chốt; | ручка ОТКРЫТИЕ ФОНАРЯ установлена в положение ФОНАРЬ ЗАКРЫТ и застопорена;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.2.4 | - Chỉ báo cơ học, ở bảng đứng bên trái, khớp với vạch ФОНАРЬ ЗАКРЫТ (NẮP ĐÓNG); | механический указатель, на левом вертикальном борту, совмещен с риской ФОНАРЬ ЗАКРЫТ;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.2.5 | - Đèn chỉ báo trạng thái mở nắp buồng lái trên khung hình КИСС ТИПОВОЙ tắt; | погасание индикатора открытого положения фонаря на мнемокадре КИСС ТИПОВОЙ;\n";
-		this.rawData += "KT_Nguon_MD | btn_yes.2.1 | - Thông báo ЗАПРИ ФОНАР tắt. | погасание инструкции ЗАПРИ ФОНАРЬ.\n";
-		this.rawData += "KT_Nguon_MD | btn_next.3.1 | - Nếu kêt quả kiểm tra tốt hãy nhấn nút ДА để đi tiếp, nếu không tốt hãy nhấn nút НЕТ. | Подтверждение результата проверки каждой последующей инструкции выполняется из одной или двух кабин (в зависимости от количества членов экипажа) нажатием кнопки ДА или НЕТ на мнемокадре ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ.\n";
-		this.rawData += "KT_Nguon_MD | btn_next.3.2 | Lưu ý: Cho phép đóng nắp buồng lái ngay trước khi khởi động động cơ, khi đó thông báo ЗАПРИ ФОНАРЬ sẽ được hiển thị đồng thời với các thông báo khác khi chuẩn bị khởi động. | Примечание: Допускается закрытие фонаря непосредственно перед запуском двигателей, при этом инструкция ЗАПРИ ФОНАРЬ будет индицироваться одновременно с другими инструкциями этапа подготовки к запуску.\n";
-		this.rawData += "KT_Nguon_MD | btn_yes.2.1 | Chỉ dẫn 2: ПРОВЕРЬ ЭКРАНЫ МФЦИ, УСТАНОВИ ЯРКОСТЬ (KIỂM TRA MÀN HÌNH МФЦИ, THIẾT LẬP ĐỘ SÁNG) | 2. ПРОВЕРЬ ЭКРАНЫ МФЦИ,УСТАНОВИ ЯРКОСТЬ\n";
-		this.rawData += "KT_Nguon_MD | btn_next.4.2 | Kiểm tra tình trạng hoạt động của các màn hình chỉ thị bằng sự hiện diện của biểu tượng N ở góc dưới bên phải màn hình; | проконтролировать исправность индикаторов по наличию символа N в правом нижнем углу экрана;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.4.3 | Thiết lập độ sáng cần thiết; | установить требуемую яркость;\n";
-		this.rawData += "KT_Nguon_MD | btn_yes.3.1 | Nhấn nút ДА; | нажать кнопку ДА;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.5.2 | Chỉ dẫn 3: ВКЛЮЧИ СТОЯНОЧНЫЙ ТОРМОЗ (BẬT PHANH ĐỖ) | 3. ВКЛЮЧИ СТОЯНОЧНЫЙ ТОРМОЗ\n";
-		this.rawData += "KT_Nguon_MD | btn_next.5.3 | Dùng tay phải nắm lấy tay cầm СТОЯН ТОРМ trên thành ngang bên phải, kéo lên trên, xoay theo chiều kim đồng hồ 90 độ và cố định; | правой рукой взяться за рукоятку СТОЯН ТОРМ на правом горизонтальном пульте, потянуть ее вверх, повернуть по часовой стрелке на 90 градусов и зафиксировать;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.6.1 | Kiểm tra việc tắt hướng dẫn ВКЛЮЧИ СТОЯНОЧНЫЙ ТОРМОЗ và sự xuất hiện trong cửa sổ БАСК thông báo СТОЯНОЧНЫЙ ТОРМОЗ ВКЛЮЧЕН (PHANH ĐỖ ĐÃ BẬT). | проконтролировать погасание инструкции ВКЛЮЧИ СТОЯНОЧНЫЙ ТОРМОЗ и появление в окне БАСК сообщения СТОЯНОЧНЫЙ ТОРМОЗ ВКЛЮЧЕН.\n";
-		this.rawData += "KT_Nguon_MD | btn_next.6.2 | Chỉ dẫn 4: ПРОВЕРЬ СЭС (KIỂM TRA HỆ THỐNG ĐIỆN) | 4. ПРОВЕРЬ СЭС\n";
-		this.rawData += "KT_Nguon_MD | btn_next.6.3 | Kiểm tra điện áp nguồn điện trên khung hình КИСС СЭС | по индикации на мнемокадре СЭС проверить соответствие напряжения электропитания установленным значениям и состояние СЭС;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.6.4 | Nhấn nút ДА; | нажать кнопку ДА;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.6.5 | Kiểm tra việc thay đổi hiển thị trên màn hình МФЦИ ở giữa từ khung hình КИСС СЭС sang khung hình КИСС ДВИГАТЕЛЬ. | проконтролировать смену индикации на среднем МФЦИ мнемокадра КИСС СЭС на мнемокадр КИСС ДВИГАТЕЛЬ.\n";
-		this.rawData += "KT_Nguon_MD | btn_next.6.6 | Chỉ dẫn 5: ПРОВЕРЬ РИ (KIỂM TRA THÔNG THOẠI) | 5. ПРОВЕРЬ РИ\n";
-		this.rawData += "KT_Nguon_MD | btn_next.6.7 | Nhấn nút РИ trên bảng điều khiển đài vô tuyến; | нажать кнопку РИ на пульте управления радиостанцией;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.6.8 | Nghe thông báo РЕЧЕВОЙ ИНФОРМАТОР ИСПРАВЕН (HỆ THỐNG THÔNG THOẠI HOẠT ĐỘNG TỐT); | прослушать сообщение РЕЧЕВОЙ ИНФОРМАТОР ИСПРАВЕН;\n";
-		this.rawData += "KT_Nguon_MD | btn_next.6.9 | Nhấn nút ДА. | нажать кнопку ДА.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG | MỞ MÁY NGOẠI TRƯỜNG | nan\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.1.1 | Kiểm tra khả năng hoạt động của các hệ thống trên máy bay khi sử dụng nguồn điện sân bay: | Выполнить проверку работоспособности бортовых систем при питании от аэродромного источника энергии:\n";
+		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.akum_lev.1.2 | Bật công tắc АККУМ ЛЕВ (ẮC QUY TRÁI); | включить выключатель АККУМ ЛЕВ;\n";
+		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.akum_prav.1.3 | Bật công tắc АККУМ ПРАВ (ẮC QUY PHẢI); | включить выключатель АККУМ ПРАВ;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.1.4 | Kiểm tra sự hiển thị của Màn hình chỉ thị đa năng ở cả hai buồng lái | проконтролировать индикацию на МФЦИ обеих кабин мнемокадров:\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhTrai.1.5 | Trên màn hình bên trái hiển thị khung hình Kiểm tra trước khi bay ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ; | на левом ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhPhai.1.6 | Trên màn hình bên phải hiển thị khung hình КИСС ТИПОВОЙ; | на правом КИСС ТИПОВОЙ;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.1.7 | Trên màn hình ở giữa hiển thị khung hình КИСС СЭС; | на среднем КИСС СЭС;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.1.8 | Kiểm tra liên lạc vô tuyến qua thiết bị liên lạc nội bộ giữa các phi công ở buồng lái trước và buồng lái sau, với kỹ thuật trưởng máy bay và điều chỉnh âm lượng nếu cần thiết; | проверить радиосвязь по СПУ между летчиками в первой и второй кабинах, с техником самолета и при необходимости отрегулировать громкость;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.1.9 | Kiểm tra việc thiết lập kênh liên lạc vô tuyến với chỉ huy bay trên bảng điều khiển của СПУ; | проверить установку канала радиосвязи с руководителем полетов на объединенном пульте управления СПУ;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.1.10 | Thực hiện tuần tự các hướng dẫn hiển thị trong cửa sổ 5 của khung hình ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ: | выполнить последовательно инструкции, предъявляемые в окне 5 мнемокадра ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ:\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.2.9 | ПРОВЕРЬ ЭКРАНЫ МФЦИ, УСТАНОВИ ЯРКОСТЬ (KIỂM TRA MÀN HÌNH МФЦИ, THIẾT LẬP ĐỘ SÁNG) | ПРОВЕРЬ ЭКРАНЫ МФЦИ,УСТАНОВИ ЯРКОСТЬ\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhTrai.kyhieuN.2.10 | Kiểm tra tình trạng hoạt động của các màn hình chỉ thị bằng sự hiện diện của biểu tượng N ở góc dưới bên phải màn hình; | проконтролировать исправность индикаторов по наличию символа N в правом нижнем углу экрана;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.kyhieuN | nan | nan\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhPhai.kyhieuN | nan | nan\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.3.1 | Thiết lập độ sáng cần thiết; | установить требуемую яркость;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhTrai.btn_dvig.3.2 | Nhấn nút ДА; | нажать кнопку ДА;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.3.3 | ПРОВЕРЬ СЭС (KIỂM TRA HỆ THỐNG ĐIỆN) | ПРОВЕРЬ СЭС\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.3.4 | Kiểm tra điện áp nguồn điện trên khung hình КИСС СЭС | по индикации на мнемокадре СЭС проверить соответствие напряжения электропитания установленным значениям и состояние СЭС;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhTrai.btn_dvig.3.5 | Nhấn nút ДА; | нажать кнопку ДА;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.3.6 | Kiểm tra sự thay đổi hiển thị trên màn hình МФЦИ ở giữa từ khung hình КИСС СЭС sang khung hình КИСС ДВИГАТЕЛЬ. | проконтролировать смену индикации на среднем МФЦИ мнемокадра КИСС СЭС на мнемокадр КИСС ДВИГАТЕЛЬ.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.3.7 | ПРОВЕРЬ ЛАМПЫ САС (KIỂM TRA CÁC ĐÈN BÁO KHẨN CẤP) | ПРОВЕРЬ ЛАМПЫ САС\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.kontron_lamp.3.8 | Nhấn nút КОНТРОЛЬ ЛАМП (KIỂM TRA ĐÈN) | нажать кнопку КОНТРОЛЬ ЛАМП на правой стороне приборной доски;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.3.9 | Đánh giá độ sáng của các đèn báo khẩn cấp; | оценить свечение ламп САС;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhTrai.btn_dvig.3.10 | Nhấn nút ДА; | нажать кнопку ДА;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.4.1 | ПРОВЕРЬ РИ (KIỂM TRA THÔNG THOẠI) | ПРОВЕРЬ РИ\n";
+		this.rawData += "KT_Nguon_MD | left_panel.ri.4.2 | Nhấn nút РИ trên bảng điều khiển đài vô tuyến; | нажать кнопку РИ на пульте управления радиостанцией;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.4.3 | Nghe thông báo РЕЧЕВОЙ ИНФОРМАТОР ИСПРАВЕН (HỆ THỐNG THÔNG THOẠI HOẠT ĐỘNG TỐT); | прослушать сообщение РЕЧЕВОЙ ИНФОРМАТОР ИСПРАВЕН;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhTrai.btn_dvig.4.4 | Nhấn nút ДА. | нажать кнопку ДА.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.4.6 | ПРОВЕРЬ ВНУТРИКАБИННОЕ ОСВЕЩЕНИЕ (KIỂM TRA CHIẾU SÁNG TRONG BUỒNG LÁI) | ПРОВЕРЬВНУТРИКАБИННОЕ ОСВЕЩЕНИЕ\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.4.7 | – Thực hiện kiểm tra bằng mắt thường hệ thống chiếu sáng trong buồng lái; | – выполнить визуальную проверку внутрикабинного освещения;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhTrai.btn_dvig.4.8 | – Nhấn nút ДА. | – нажать кнопку ДА.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.4.9 | ПРОВЕРЬ ИНДИКАТОР ПУИ (KIỂM TRA MÀN HÌNH CHỈ THỊ PUI) | ПРОВЕРЬИНДИКАТОР ПУИ\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.pui.4.10 | – Kiểm tra để đảm bảo trên ПУИ không có thông báo НЕТ ИНФОРМАЦИИ (KHÔNG CÓ THÔNG TIN); | – проконтролировать отсутствие на ПУИ сообщения НЕТ ИНФОРМАЦИИ;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.pui.yark.5.1 | – Cài đặt độ sáng theo yêu cầu; | – установить требуемую яркость;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhTrai.btn_dvig.5.2 | – Nhấn nút ДА. | – нажать кнопку ДА.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.5.3 | ПРОВЕРЬ ИНДИКАТОР ИЛС (KIỂM TRA MÀN HÌNH CHỈ THỊ KÍNH NGẮM) | ПРОВЕРЬИНДИКАТОР ИЛС\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhTrai.btn_dvig.5.4 | – Nhấn nút ДА. | – нажать кнопку ДА.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.5.5 | Khi hoàn thành kiểm tra này, trên màn hình МФЦИ giữa, khung hình КИСС ДВИГ sẽ thay đổi thành khung hình НАЧАЛЬНЫЕ ДАННЫЕ (DỮ LIỆU BAN ĐẦU). | По окончанию выполнения данной проверки на среднем МФЦИ мнемокадр КИСС ДВИГ меняется на мнемокадр НАЧАЛЬНЫЕ ДАННЫЕ (рис. 4).\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.5.6 | ВВЕДИ НАЧАЛЬНЫЕ ДАННЫЕ ВКЛЮЧИ ВЫСТАВКУ БИНС УСТАНОВИ (NHẬP DỮ LIỆU BAN ĐẦU BẬT CĂN CHỈNH BINS) | ВВЕДИ НАЧАЛЬНЫЕ ДАННЫЕВКЛЮЧИ ВЫСТАВКУ БИНСУСТАНОВИ\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.5.7 | – Nhập (kiểm tra) các dữ liệu ban đầu và dữ liệu cài đặt; | – ввести (проконтролировать) начальные и установочные данные;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhTrai.btn_dvig.5.8 | – Nhấn nút ДА. | – нажать кнопку ДА.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.5.9 | ВЫБЕРИ РЕЖИМ КАТАПУЛЬТИРОВАНИЯ (CHỌN CHẾ ĐỘ PHÓNG GHẾ THOÁT HIỂM) | 10. ВЫБЕРИ РЕЖИМКАТАПУЛЬТИРОВАНИЯ\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.5.10 | Đồng thời với thông báo ВЫБЕРИ РЕЖИМ КАТАПУЛЬТИРОВАНИЯ trong cửa sổ số 5 sẽ hiển thị thông báo КАТАПУЛЬТИРОВАНИЕ ИЗ 2-Х КАБИН hoặc КАТАПУЛЬТИРОВАНИЕ ИЗ 1-Й КАБИНЫ (PHÓNG GHẾ CỨU HỘ TỪ BUỒNG LÁI TRƯỚC) tùy thuộc vào vị trí của công tắc КАТАПУЛЬТИРОВАНИЕ (PHÓNG GHẾ) trên bảng điều khiển ngang bên trái của buồng lái thứ hai dựa theo số lượng thành viên phi hành đoàn. | Одновременно с сообщением ВЫБЕРИ РЕЖИМ КАТАПУЛЬТИРОВАНИЯ в окне 5 индицируется сообщение КАТАПУЛЬТИРОВАНИЕ ИЗ 2-х КАБИН или КАТАПУЛЬТИРОВАНИЕ ИЗ 1-й КАБИНЫ в зависимости от положения переключателя КАТАПУЛЬТИРОВАНИЕ на левом горизонтальном пульте второй кабины в зависимости от количества членов экипажа.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.6.1 | – Để xác nhận chọn phóng ghế từ hai buồng lái (khi có hai thành viên phi hành đoàn), cần nhấn nút ДА trên МФЦИ bên trái trong mỗi buồng lái, sau đó hướng dẫn ВЫБЕРИ РЕЖИМ КАТАПУЛЬТИРОВАНИЯ (CHỌN CHẾ ĐỘ PHÓNG GHẾ) và thông báo КАТАПУЛЬТИРОВАНИЕ ИЗ 2-Х КАБИН (PHÓNG GHẾ TỪ 2 BUỒNG LÁI) sẽ tắt; | для подтверждения выбора катапультирования из двух кабин (при двух членах экипажа) необходимо нажать кнопку ДА на левом МФЦИ в каждой кабине, после чего инструкция ВЫБЕРИ РЕЖИМ КАТАПУЛЬТИРОВАНИЯ и сообщение КАТАПУЛЬТИРОВАНИЕ ИЗ 2-х КАБИН погаснут;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.6.2 | – Để xác nhận chọn phóng ghế từ buồng lái thứ nhất (khi có một thành viên phi hành đoàn), cần nhấn nút ДА trên МФЦИ bên trái trong buồng lái thứ nhất, sau đó hướng dẫn ВЫБЕРИ РЕЖИМ КАТАПУЛЬТИРОВАНИЯ (CHỌN CHẾ ĐỘ PHÓNG GHẾ) và thông báo КАТАПУЛЬТИРОВАНИЕ ИЗ 1-Й КАБИНЫ (PHÓNG GHẾ CỨU HỘ TỪ BUỒNG LÁI 1) sẽ tắt. | – для подтверждения выбора катапультирования из первой кабины (при одном члене экипажа) необходимо нажать кнопку ДА на левом МФЦИ в первой кабине, после чего инструкция ВЫБЕРИ РЕЖИМ КАТАПУЛЬТИРОВАНИЯ и сообщение КАТАПУЛЬТИРОВАНИЕ ИЗ 1-й КАБИНЫ погаснут.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.6.3 | КОНТРОЛЬ КСАП (KIỂM TRA HỆ THỐNG SÁT THƯƠNG HÀNG KHÔNG) | КОНТРОЛЬ КСАП\n";
+		this.rawData += "KT_Nguon_MD | right_panel.congTacThanhPhai.kiem_tra_ksap.6.4 | – Nhấc nắp bảo vệ nút ấn thoát hiểm. | ‒ поднять защитную крышку КОНТРОЛЬ КСАП\n";
+		this.rawData += "KT_Nguon_MD | right_panel.congTacThanhPhai.kontpksap.6.5 | – Nhấn nút КОНТРОЛЬ КСАП trên thành phải của buồng lái thứ nhất. Nếu hệ thống КСАП hoạt động tốt, hướng dẫn trong cửa sổ số 5 ВЫПОЛНИ КОНТРОЛЬ КСАП sẽ thay đổi thành thông báo ЭЛЕКТРОЦЕПИ КСАП ИСПРАВНЫ – ВКЛЮЧИ ПИТАНИЕ КСАП (MẠCH ĐIỆN KSAP TỐT – BẬT NGUỒN KSAP); | ‒ нажать переключатель КОНТРОЛЬ КСАП расположенный на правом горизонтальном пульте первой кабины. При исправности системы КСАП инструкция в окне 5 ВЫПОЛНИ КОНТРОЛЬ КСАП меняется на сообщение ЭЛЕКТРОЦЕПИ КСАП ИСПРАВНЫ – ВКЛЮЧИ ПИТАНИЕ КСАП: ЭЛЕКТРОЦЕПИ КСАП ИСПРАВНЫ – ВКЛЮЧИ ПИТАНИЕ КСАП\n";
+		this.rawData += "KT_Nguon_MD | right_panel.congTacThanhPhai.cong_tac_ksap.6.6 | – Đưa công tắc bật thoát hiểm về vị trí ВКЛ (BẬT), khi đó trong cửa sổ số 5 sẽ xuất hiện một trong các thông báo sau: УСТАНОВИ МАССУ, МАЛАЯ МАССА МЕНЕЕ 75 кг; УСТАНОВИ МАССУ, СРЕДНЯЯ МАССА от 75 до 100 кг; УСТАНОВИ МАССУ, БОЛЬШАЯ МАССА СВЫШЕ 100 кг; | – установить выключатель на правом горизонтальном пульте КСАП ВКЛ–ОТКЛ в положение ВКЛ, при этом в окне 5 высвечивается одно из сообщений: УСТАНОВИ МАССУ, МАЛАЯ МАССА МЕНЕЕ 75 кг УСТАНОВИ МАССУ, СРЕДНЯЯ МАССА от 75 до 100 кг УСТАНОВИ МАССУ, БОЛЬШАЯ МАССА СВЫШЕ 100 кг\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhTrai.btn_dvig.6.7 | nan | nan\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.6.8 | – Đặt công tắc МАССА (TRỌNG LƯỢNG) trên ghế phóng cứu hộ vào vị trí tương ứng với trọng lượng cần thiết; | – установить переключатель МАССА на катапультном кресле в положение, соответствующее необходимому весу;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.6.9 | – Nhấn nút ДА. | – нажать кнопку ДА.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.6.10 | 1. Để khởi động động cơ, lần lượt bật các công tắc sau: | 1. Получив разрешение на запуск включить выключатели на правом вертикальном борту:\n";
+		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.generator_lev.7.1 | – ГЕНЕРАТОР ЛЕВ (MÁY PHÁT ĐIỆN TRÁI); | ‒ ГЕНЕРАТОР ЛЕВ;\n";
+		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.generator_prav.7.2 | – ГЕНЕРАТОР ПРАВ (MÁY PHÁT ĐIỆN PHẢI); | ‒ ГЕНЕРАТОР ПРАВ;\n";
+		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.topl_nasos.7.3 | – ТОПЛ НАСОСЫ (BƠM NHIÊN LIỆU); | ‒ ТОПЛ НАСОСЫ;\n";
+		this.rawData += "KT_Nguon_MD | nguonNangLuong.congTacNguon.kislorod_oxy.7.4 | – КИСЛОРОД (OXY). | ‒ КИСЛОРОД.\n";
+		this.rawData += "KT_Nguon_MD | rud_LeftRight.rud_right.7.5 | 2. Đưa tay dầu của cả hai động cơ vào vị trí Ga nhỏ. | 2. Установить РУД обоих двигателей на упор МГ.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.7.6 | Sau khi đưa tay dầu của cả 2 động cơ lên vị trí Ga nhỏ, trên màn hình МФЦИ trong cửa sổ số 1 sẽ xuất hiện các thông báo ЛЕВЫЙ К ЗАПУСКУ ГОТОВ, ПРАВЫЙ К ЗАПУСКУ ГОТОВ, và thông báo К ЗАПУСКУ ДВИГАТЕЛЕЙ НЕ ГОТОВ sẽ tắt. | После установки левого и правого РУД на упор МГ на экране МФЦИ в окне 1 появляются сообщения ЛЕВЫЙ К ЗАПУСКУ ГОТОВ, ПРАВЫЙ К ЗАПУСКУ ГОТОВ, а сообщение К ЗАПУСКУ ДВИГАТЕЛЕЙ НЕ ГОТОВ гаснет.\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.small_panel_right.napAnKD_DC.7.7 | 3.    Nhấn nút ЗАПУСК НА ЗЕМЛЕ (KHỞI ĐỘNG Ở MẶT ĐẤT), lúc này quá trình khởi động ВСУ sẽ diễn ra. | 3. Нажать кнопку ЗАПУСК НА ЗЕМЛЕ, при этом происходит запуск ВСУ.\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.small_panel_right.nutAnKD_VCY_2DC.7.8 | nan | nan\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.7.9 | 4.    Trong quá trình khởi động ВСУ trên khung hiển thị sơ đồ КИСС ДВИГ, cần kiểm tra: | 4. В процессе запуска ВСУ на мнемокадре КИСС ДВИГ контролировать:\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.chedo.7.10 | – Chỉ thị dòng chữ ЗАПУСК (KHỞI ĐỘNG) phía trên đồng hồ chỉ thị các thông số của ВСУ; | – индикацию надписи ЗАПУСК над индикатором параметров ВСУ;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoBCY.timer_txt2.8.1 | – Sự kích hoạt của bộ đếm thời gian khởi động ВСУ; | – включение счетчика времени запуска ВСУ;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoVongQuayTrai.dongHoNhietDo.nhietDo_txt.8.2 | – Sự gia tăng của vòng quay và nhiệt độ khí cháy; | – рост оборотов и температуры выходящих газов;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoBCY.timer_txt2.8.3 | – Thời gian khởi động ВСУ (không quá 40 giây). | – время запуска ВСУ (не более 40 с).\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoBCY.timer_txt3.8.4 | – Nhiệt độ khí cháy không được vượt quá 800 °C | При запуске ВСУ контролировать максимальную температуру выходящих газов – не должна превышать 800 °C\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoBCY.timer_txt1.8.5 | – Vòng quay rô-to không được vượt quá 109 %. | Mаксимальные обороты ротора – не должны превышать 109 %.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.8.6 | Nếu vượt quá các giá trị tối đa của nhiệt độ khí cháy hoặc vòng quay rô-to trong quá trình khởi động, hãy dừng việc khởi động bằng cách nhấn nút ОСТАНОВ trên bảng điều khiển. | При превышении в процессе запуска ВСУ максимальных значений температуры выходящих газов или оборотов ротора прекратить запуск ВСУ нажатием кнопки ОСТАНОВ на панели ВСУ.\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.chedo.8.7 | Khi kết thúc quá trình khởi động ВСУ, dòng chữ ЗАПУСК phía sẽ thay đổi thành dòng chữ РЕЖИМ (CHẾ ĐỘ). | По окончании запуска ВСУ надпись ЗАПУСК над индикатором параметров ВСУ меняется на надпись РЕЖИМ.\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoBCY.timer_txt3.8.9 | – Nhiệt độ khí cháy tối đa không quá 720 °C; | – максимальная температура выходящих газов не более 720 °C;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoBCY.timer_txt1.8.10 | – Số vòng quay rô-to tối đa không quá 109 %. | – максимальные обороты ротора не более 109 %.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.9.1 | 5.    15 giây sau khi ВСУ đạt đến chế độ làm việc, động cơ bên trái sẽ tự động bắt đầu khởi động. | 5. Через 15 с после выхода ВСУ на режим автоматически начинается запуск левого двигателя.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.9.2 | 6.    15 giây sau khi động cơ bên trái đạt đến chế độ Ga nhỏ, động cơ bên phải sẽ tự động bắt đầu khởi động. | 6. Через 15 с после выхода левого двигателя на режим МГ автоматически начинается запуск правого двигателя.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.9.3 | Trong quá trình khởi động động cơ, trên khung hiển thị sơ đồ КИСС ДВИГ, cần kiểm tra: | Во время запуска двигателя, на мнемокадре КИСС ДВИГ контролировать:\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.9.4 | – Xuất hiện thông báo ИДЕТ ЗАПУСК ЛЕВОГО (ПРАВОГО) ДВИГАТЕЛЯ (ĐANG KHỞI ĐỘNG ĐỘNG CƠ TRÁI (PHẢI)); | – индикацию в поле БАСК сообщения ИДЕТ ЗАПУСК ЛЕВОГО (ПРАВОГО) ДВИГАТЕЛЯ;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoVongQuayTrai.thoiGian_txt.9.5 | – Sự kích hoạt của bộ đếm thời gian khởi động động cơ; | – включение счетчика времени запуска двигателя;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoVongQuayTrai.denKD.9.6 | – Tín hiệu báo trạng thái khởi động động cơ (màu vàng); | – индикацию желтого сигнализатора работы системы запуска;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.den_VTC_Trai.9.7 | – Tín hiếu báo mở van ВТС (màu xanh da trời); | – индикацию синего сигнализатора открытия створки ВТС;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoVongQuayTrai.kimCaoAp.9.8 | – Sự gia tăng vòng quay của rô-to áp suất cao (nРВД); | – нарастание оборотов ротора высокого давления (nРВД);\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoVongQuayTrai.kimThapAp.9.9 | – Sự gia tăng vòng quay của rô-to áp suất thấp (nРНД) khi nРВД = 20 %; | – нарастание оборотов ротора низкого давления (nРНД) при nРВД ≈ 20 %;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.ap_suat_nd_lev.9.10 | – Sự gia tăng áp suất dầu ở đầu nhờn ở cửa vào động cơ; | – увеличение давления масла на входе в двигатель;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoVongQuayTrai.dongHoNhietDo.nhietDo_txt.10.1 | – Sau 15 giây kể từ khi bắt đầu khởi động, sự gia tăng nhiệt độ khí cháy, giá trị này không được vượt quá 700 °C; | – через 15 с от начала запуска нарастание температуры выходящих газов, которая не должна превышать 700 °C;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.den_VTC_Trai.10.2 | – Sự ngắt ВТС và đóng cửa van ВТС dựa trên việc tắt đèn báo ВТС khi nРВД ≤ 55 %; | – отключение ВТС и закрытие створки ВТС по погасанию синего сигнализатора ВТС при nРВД ≤ 55 %;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoVongQuayTrai.thoiGian_txt.10.3 | – Thời gian khởi động động cơ tối đa, không được quá 60 giây; | – максимальное время запуска двигателя, которое должно быть не более 60 с;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoVongQuayTrai.denKD.10.4 | – Việc tắt tín hiệu báo trạng thái khởi động động cơ, sau khi động cơ đạt đến chế độ ga nhỏ. | – погасание индикации желтого сигнала работы системы запуска, после выхода двигателя на режим малого газа.\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhPhai.cua_hut_khi_Trai.10.5 | 7.    Kiểm tra, qua khung hình КИСС ТИПОВОЙ, việc mở cửa hút khí phía trên khi nРВД > 35 %. | 7. Проконтролировать, по мнемокадру КИСС ТИПОВОЙ, перекладку створки воздухозаборника на верхний вход при nРВД > 35 %.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.10.6 | 8.    15 giây sau khi động cơ trái đạt đến chế độ ga nhỏ, động cơ phải sẽ tự động bắt đầu khởi động. | 8. Через 15 с после выхода левого двигателя на режим МГ автоматически начинается запуск правого двигателя.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.10.7 | 9.    Sau khi khởi động, kiểm tra các thông số hoạt động của động cơ ở chế độ ga nhỏ: | 9. После запуска проконтролировать параметры работы двигателей на МГ:\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoVongQuayTrai.kimThapAp.10.8 | – Vòng quay rô to thấp áp nРНД = 28…35 %; | – nРНД = 28…35 %;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoVongQuayTrai.vongQuay_txt.10.9 | – Vòng quay rô to cao áp nРВД ≥ 60 %; | – nРВД ≥ 60 %;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.dongHoVongQuayTrai.dongHoNhietDo.nhietDo_txt.10.10 | – Nhiệt độ khí cháy không vượt quá 700 °C; | – температура выходящих газов – не более 700 °C;\n";
+		this.rawData += "KT_Nguon_MD | manHinhChinh.manHinhGiua.ap_suat_nd_lev.11.1 | – Áp suất dầu không nhỏ hơn 2,0 kg/cm². | – давление масла – не менее 2,0 кг/см².\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.11.2 | CHÚ Ý: Dừng việc khởi động động cơ bằng cách đưa tay dầu về vị trí vào vị trí СТО, nếu trong quá trình khởi động động cơ: | ВНИМАНИЕ: Запуск двигателя прекратить постановкой РУД в положение СТОП, если в процессе запуска двигателя:\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.11.3 | – Rô-to áp suất cao không quay sau 5 giây kể từ khi bắt đầu khởi động; | – отсутствует раскрутка ротора высокого давления через 5 с после начала запуска;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.11.4 | – Rô-to áp suất thấp không quay khi vòng quay của rô-to áp suất cao từ 23 % trở lên; | – отсутствует раскрутка ротора низкого давления при оборотах ротора высокого давления 23 % и более;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.11.5 | – Nhiệt độ khí xả không tăng sau 30 giây kể từ khi bắt đầu khởi động; | – отсутствует рост температуры выходящих газов через 30 с после начала запуска;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.11.6 | – Không có áp suất dầu nhờn ở đầu vào động cơ sau 30 giây kể từ khi bắt đầu khởi động; | – отсутствует давление масла на входе в двигатель через 30 с после начала запуска;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.11.7 | – Khi vòng quay rô to cao áp nРВД > 55 % mà không có sự ngắt ВТС và đèn báo ВТС tiếp tục hiển thị màu xanh; | – при nРВД > 55 % нет отключения ВТС и продолжается индицироваться синим цветом сигнализатор ВТС;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.11.8 | – Nhiệt độ khí cháy có xu hướng vượt quá 700 °C; | – температура выходящих газов стремится превысить 700 °C;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.11.9 | – Sau 60 giây kể từ khi bắt đầu khởi động, động cơ vẫn chưa đạt đến chế độ ga nhỏ; | – через 60 с после начала запуска двигатель не вышел на режим малого газа;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.11.10 | – Xuất hiện tín hiệu báo cháy; | – срабатывание сигнализации ПОЖАР;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.12.1 | – Chỉ thị trong cửa sổ БАСК các thông báo liên quan đến các hỏng hóc có thể xảy ra của động cơ; | – индикация в окне БАСК сообщений связанных с возможными отказами двигателя;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.12.2 | – Các thông số hoạt động của động cơ không tương ứng với chế độ không tải nhỏ. | – несоответствие параметров работы двигателя режиму малого газа.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.12.3 | Việc khởi động lại động cơ được phép thực hiện nếu nguyên nhân dừng khởi động là: | Повторный запуск двигателя разрешается производить, если причиной прекращения запуска было:\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.12.4 | – Không điểm lửa được nhiên liệu trong buồng đốt; | – не воспламенение топлива в камере сгорания;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.12.5 | – Nhiệt độ khí cháy có xu hướng vượt quá 700 °C; | – стремление температуры выходящих газов превысить 700 °C;\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.12.6 | – Quyết định của phi công, không liên quan đến các nguyên nhân được liệt kê trong mục CHÚ Ý. | – решение летчика, не связанное с причинами, перечисленными в пункте ВНИМАНИЕ.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.12.7 | CHÚ Ý: Trước khi thực hiện khởi động lại, phải tiến hành quay lạnh động cơ. Được phép thực hiện ba lần khởi động liên tiếp cho mỗi động cơ với khoảng thời gian nghỉ không dưới 30 giây tính từ thời điểm rô-to áp suất cao ngừng quay cho đến khi bắt đầu lần khởi động tiếp theo. | ВНИМАНИЕ: Перед выполнением повторного запуска выполнить холодную прокрутку двигателя. Разрешается выполнять три попытки запуска каждого двигателя подряд с перерывами не менее 30 с от момента прекращения вращения ротора высокого давления до начала последующего запуска.\n";
+		this.rawData += "KT_Nguon_MD | mc_Subtitle.nextG.12.8 | Trong tất cả các trường hợp khác, các lần khởi động động cơ tiếp theo chỉ được thực hiện sau khi đã xác định và khắc phục được nguyên nhân gây dừng khởi động. | Во всех остальных случаях последующие запуски двигателя производить только после выявления и устранения причин прекращения запуска.\n";
 		this.rawData += "KT_Nguon_AQ | nguonNangLuong.congTacNguon.akum_lev.1.1 | Tôi đã sửa | nan\n";
 		this.rawData += "KT_Nguon_AQ | nguonNangLuong.congTacNguon.akum_prav.1.2 | Khi sử dụng nguồn từ ắc quy trên máy bay, điện sẽ được cấp cho các thiết bị tiêu thụ điện cấp 1, do đó màn hình МФЦИ ở giữa trong cả hai buồng lái sẽ không hoạt động cho đến khi máy phát điện của ВСУ được kết nối vào mạng điện máy bay. | При питании от бортовых аккумуляторов электропитание подается на потребители первой категории, поэтому средний МФЦИ в обеих кабинах не работает до момента подключения генератора ВСУ к бортовой сети.\n";
 		this.rawData += "KT_Nguon_AQ | nguonNangLuong.congTacNguon.generator_lev.1.3 | – Bật công tắc АККУМ ЛЕВ (ẮC QUY TRÁI); | – включить выключатель АККУМ ЛЕВ;\n";
@@ -56,24 +133,10 @@ var ScenarioData = {
 		this.rawData += "KT_Nguon_AQ | btn_yes.1.1 | – Bật công tắc АККУМ ЛЕВ (ẮC QUY TRÁI). | – включить выключатель АККУМ ЛЕВ.\n";
 		this.rawData += "KT_Nguon_AQ | btn_next.2.1 | Thời gian từ lúc bật các ắc quy cho đến khi khởi động ВСУphải ở mức tối thiểu (trong cửa sổ số 3 của khung hình ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ có hiển thị thang thời gian thực hiện quá trình kiểm tra trên mặt đất). | Время от момента включения аккумуляторов до запуска ВСУ должно быть минимальным (в окне 3 мнемокадра МФЦИ ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ индицируется шкала времени проведения наземного контроля).\n";
 		this.rawData += "KT_Nguon_AQ | btn_next.2.2 | – Thực hiện lần lượt các hướng dẫn được đưa ra trong cửa sổ số 5 của khung hình ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ, tương tự như quy trình kiểm tra khi được cấp điện từ nguồn điện sân bay. | – выполнить последовательно инструкции, предъявляемые в окне 5 мнемокадра ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ, аналогично проверке при наличии питания от аэродромного источника энергии\n";
-		this.rawData += "KT_Truoc_KD | nguonNangLuong.congTacNguon.akum_lev.1.1 | 1. kiểm tra khả năng hoạt động của các hệ thống trên máy bay trước khi khởi động động cơ | 1. Проверка работоспособности бортовых систем перед запуском двигателей\n";
-		this.rawData += "KT_Truoc_KD | nguonNangLuong.congTacNguon.akum_prav.1.2 | Sau khi thực hiện quy trình kiểm tra các hệ thống trên máy bay từ các nguồn điện, trong cửa sổ số 5 của khung hình ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ sẽ lần lượt đưa ra các hướng dẫn sau: | После выполнения процедуры проверки бортовых систем от источников электропитания в окне 5 мнемокадра ПРЕДПОЛЕТНЫЙ КОНТРОЛЬ последовательно выводятся следующие инструкции:\n";
-		this.rawData += "KT_Truoc_KD | nguonNangLuong.congTacNguon.generator_lev.1.3 | 1.    ПРОВЕРЬ ВНУТРИКАБИННОЕ ОСВЕЩЕНИЕ (KIỂM TRA CHIẾU SÁNG TRONG BUỒNG LÁI) | 1. ПРОВЕРЬВНУТРИКАБИННОЕ ОСВЕЩЕНИЕ\n";
-		this.rawData += "KT_Truoc_KD | nguonNangLuong.congTacNguon.generator_prav.1.4 | – Thực hiện kiểm tra bằng mắt thường hệ thống chiếu sáng trong buồng lái; | – выполнить визуальную проверку внутрикабинного освещения;\n";
-		this.rawData += "KT_Truoc_KD | nguonNangLuong.congTacNguon.generator_vcy.1.5 | – Nhấn nút ДА. | – нажать кнопку ДА.\n";
-		this.rawData += "KT_Truoc_KD | nguonNangLuong.congTacNguon.topl_nasos.1.6 | 2.    ПРОВЕРЬ ИНДИКАТОР ПУИ (KIỂM TRA MÀN HÌNH CHỈ THỊ PUI) | 2. ПРОВЕРЬИНДИКАТОР ПУИ\n";
-		this.rawData += "KT_Truoc_KD | nguonNangLuong.congTacNguon.kislorod_oxy.1.7 | – Kiểm tra để đảm bảo trên ПУИ không có thông báo НЕТ ИНФОРМАЦИИ (KHÔNG CÓ THÔNG TIN); | – проконтролировать отсутствие на ПУИ сообщения НЕТ ИНФОРМАЦИИ;\n";
-		this.rawData += "KD_DC | nguonNangLuong.congTacNguon.akum_lev.1.1 | 1. Khởi động tự động ВСУ và hai động cơ (phương pháp khởi động chính khi có nguồn điện từ sân bay) | 1. Автоматический запуск ВСУ и двух двигателей (основной способ запуска при наличии аэродромного источника энергии)\n";
-		this.rawData += "KD_DC | nguonNangLuong.congTacNguon.akum_prav.1.2 | 1.    Sau khi nhận được sự cho phép khởi động, lần lượt bật các công tắc: | 1. Получив разрешение на запуск включить выключатели на правом вертикальном борту:\n";
-		this.rawData += "KD_DC | nguonNangLuong.congTacNguon.generator_lev.1.3 | – ГЕНЕРАТОР ЛЕВ (MÁY PHÁT ĐIỆN TRÁI); | ‒ ГЕНЕРАТОР ЛЕВ;\n";
-		this.rawData += "KD_DC | nguonNangLuong.congTacNguon.generator_prav.1.4 | – ГЕНЕРАТОР ПРАВ (MÁY PHÁT ĐIỆN PHẢI); | ‒ ГЕНЕРАТОР ПРАВ;\n";
-		this.rawData += "KD_DC | nguonNangLuong.congTacNguon.generator_vcy.1.5 | – ТОПЛ НАСОСЫ (BƠM NHIÊN LIỆU); | ‒ ТОПЛ НАСОСЫ;\n";
-		this.rawData += "KD_DC | nguonNangLuong.congTacNguon.topl_nasos.1.6 | – КИСЛОРОД (OXY). | ‒ КИСЛОРОД.\n";
-		this.rawData += "KD_DC | nguonNangLuong.congTacNguon.kislorod_oxy.1.7 | 2. Đưa РУД (tay dầu) của cả hai động cơ vào vị trí МГ (Ga nhỏ). | 2. Установить РУД обоих двигателей на упор МГ.\n";
 
 		this.rawErrors += "Thao tác sai, vui lòng thử lại. | Неверное действие, попробуйте снова.\n";
 		this.rawErrors += "Bạn đã ấn nhầm nút, hãy kiểm tra kỹ. | Вы нажали не ту кнопку, проверьте еще раз.\n";
 		this.rawErrors += "Chưa đúng, hãy nhìn vào vòng tròn gợi ý. | Ошибка! Обратите внимание на подсказку.\n";
 	}
 };
-ScenarioData.initData(); // Tự động khởi tạo khi load file
+window.ScenarioData.initData();
